@@ -8,24 +8,35 @@ const weatherData=require('./data/weather.json')
 
 const PORT=process.env.PORT;
 
-// localhost:3003/
+// localhost:3008/
 server.get('/',(req,resp)=>{
     resp.status(200).send('home route');       
 })
 
-// //localhost:3003/weatherInfo?cityName=charmander
+// //localhost:3008/weather?cityName=amman
 server.get('/weather',(req,resp)=>{
+    console.log('inside func ')
+   console.log(req.query)
     const cityWeather=weatherData.find(city=>{
-        if(city.city_name==req.query.cityName){
-            return city
+        if(req.query.cityName.toLowerCase()==city.city_name.toLowerCase()){
+            console.log(city)
+            return city;
+             
         }
+        
+            
+        })
+        const newCityWeather=cityWeather.data.map(day=>{
+            console.log(day)
+            return new Forecast(day.valid_date,day.weather.description)
+        })
+        console.log(newCityWeather)
+        resp.status(200).send(newCityWeather)
     });
-    const newCityWeather=cityWeather.date.map(day=>{
-        return new Forecast(day.Forecast.description,day.Forecast.valid_date)
-    })
-    resp.status(200).send(newCityWeather)
+    
+    
    
-})
+ 
 server.get('*',(req,resp)=>{
     resp.status(500).send('not found');
 })
