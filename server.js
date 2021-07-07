@@ -1,12 +1,17 @@
 'use strict';
 const express =require('express');
-const server=express();
-require('dotenv').config();
 const cors = require('cors');
+require('dotenv').config();
+const axios = require('axios');
+
+const server=express();
+const PORT=process.env.PORT;
+
 server.use(cors());
+
 // const weatherData=require('./data/weather.json')
 
-const PORT=process.env.PORT;
+
 
 // localhost:3008/
 // server.get('/',(req,resp)=>{
@@ -39,28 +44,27 @@ const PORT=process.env.PORT;
 // })
 
 
-// Route 
+//// Route 
+// localhost:3008/test
 server.get('/test',testHandler)
+ //localhost:3008/weather?cityName=amman
 server.get('/getWeatherInfo',getWeatherInfoHandler)
 // function handler 
 function testHandler(req,res){
     res.send('all good');
 }
 function getWeatherInfoHandler(req,res){
-    let latQuery=req.lat.latstate
-    let lonQuery=req.lon.lonstate
-    
-    //https://api.weatherbit.io/v2.0/current?lat=35.7796&lon=-78.6382&key=0d9d593942904ac0acf6e484b7a96ba4&include=minutely
-let weatherUrl=`https://api.weatherbit.io/v2.0/current?lat=${latQuery}&lon=${lonQuery}&ey=${process.env.WEATHER_API_KEY}`
+    let findQuery=req.query.cityName;
+    console.log(findQuery)
+let weatherUrl=`https://api.weatherbit.io/v2.0/forecast/daily?city=${findQuery}&key=${process.env.WEATHER_API_KEY}`
 
 axios
 .get(weatherUrl)
 .then(weatherData=>{
-    weatherData.data.find(city=>{
-        if(req.lat==city.data.lat)
-        {return city}
+    let wData=weatherData.data.data.map(city=>{
+        return new Forecast(city.valid_date,city.weather.description)
     })
-    res.send(weatherData.data)
+    res.send( wData)
    
 })
 
