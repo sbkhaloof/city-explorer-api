@@ -45,6 +45,8 @@ server.use(cors());
 
 
 //// Route 
+//localhost:3008/
+server.get('/',homeTestHandler)
 // localhost:3008/test
 server.get('/test',testHandler)
  //localhost:3008/weather?cityName=amman
@@ -56,6 +58,9 @@ server.get('/movies',getMoviesHandler)
 
 
 // function handler 
+function homeTestHandler(req,res){
+    res.send('welcome in home route');
+}
 function testHandler(req,res){
     
     res.send('all good');
