@@ -13,6 +13,9 @@ const PORT = process.env.PORT;
 
 server.use(cors());
 
+// lab 10 caching 
+
+
 //const weatherData=require('./data/weather.json')
 
 
@@ -59,7 +62,7 @@ server.get('/getWeatherInfo', getWeatherInfoHandler)
 //localhost:3008/movies?cityName=amman
 server.get('/movies', getMoviesHandler)
 
-
+console.log('server,js')
 
 // function handler 
 function homeTestHandler(req, res) {

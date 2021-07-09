@@ -1,5 +1,8 @@
+'use strict';
 const axios=('axios');
 module.exports=getMoviesHandler;
+
+let inMemory={};
 function getMoviesHandler(req,res){
     console.log('in weather fun')
     let findQuery=req.query.query;
@@ -8,11 +11,20 @@ function getMoviesHandler(req,res){
     // https://api.themoviedb.org/3/search/movie?api_key=87020c9c5f33ddf9ff4333a9ea79b990&query=irbid
     let movieUrl=`https://api.themoviedb.org/3/search/movie?api_key=${process.env.MOVIE_API_KEY}&query=${findQuery}`;
     console.log(movieUrl);
+
+    if(inMemory[findQuery]!==undefined){
+        console.log('we get the data from our server');
+        res.status(200).send(inMemory[findQuery])
+    }
+    else{
     axios
     .get(movieUrl)
     .then(movieData=>{
          console.log(movieData.data.results)
-        let movieInfo=movieData.data.results
+         console.log('send request to movie API');
+         inMemory[findQuery]=movieData.data.results;
+        console.log(inMemory[findQuery])
+          movieInfo=movieData.data.results
          console.log(movieInfo)
         let moviesObj = movieInfo.map(movies => {
             
@@ -20,6 +32,7 @@ function getMoviesHandler(req,res){
         })
         res.status(200).send(moviesObj)
     }).catch(error=>{res.send(error,)})
+}
 }
 class Movie{
     constructor(title,overview,avarge_votes,total_votes,image_url,popularity,relased_on){
