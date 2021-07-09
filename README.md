@@ -19,3 +19,13 @@
 
 ## Credit and Collaborations
 <!-- Give credit (and a link) to other people or resources that helped you build this application. -->
+## Time Estimates
+#### Name of feature: ____Modularize the back-end codebase__________
+
+#### Estimate of time needed to complete: ___10 min__
+
+#### Start time: ___2:00pm__
+
+#### Finish time: __2:10pm___
+
+#### Actual time needed to complete: _____
